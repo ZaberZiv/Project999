@@ -12,8 +12,7 @@ class MainActivity : AppCompatActivity() {
 
         val btn = findViewById<AppCompatButton>(R.id.button_show_toast)
         btn.setOnClickListener {
-
+            Toast.makeText(this@MainActivity, "Hello world", Toast.LENGTH_LONG).show()
         }
-        Toast.makeText(this@MainActivity, "Hello world", Toast.LENGTH_LONG).show()
     }
 }
