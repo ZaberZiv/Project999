@@ -4,8 +4,10 @@ import android.app.Application
 import android.util.Log
 
 class App: Application() {
+
     private val tag = "APP"
     private val deathHandler: ProcessDeathHandler = ProcessDeathHandler.Base()
+    val mainRepresentative: MainRepresentative = MainRepresentative.Base(UiObservable.Single())
 
     override fun onCreate() {
         super.onCreate()
