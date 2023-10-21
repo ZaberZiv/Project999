@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Project999</string>
     <string name="hello">Hello World</string>
+    <string name="playing">Playing</string>
+    <string name="play">play</string>
+    <string name="subscribe">subscribe</string>
 </resources>

@@ -1,17 +1,15 @@
-package com.izaber.project999.app
+package com.izaber.project999.core
 
 import androidx.annotation.MainThread
 
-interface UiObservable<T : Any> {
-    fun update(data: T)
-    fun updateObserver(uiObserver: UiObserver<T> = UiObserver.Empty())
+interface UiObservable<T : Any>: UiUpdate<T>, UpdateObserver<T> {
 
     class Base<T : Any> : UiObservable<T> {
         override fun update(data: T) = Unit
         override fun updateObserver(uiObserver: UiObserver<T>) = Unit
     }
 
-    class Single<T : Any> : UiObservable<T> {
+    abstract class Single<T : Any> : UiObservable<T> {
 
         @Volatile
         private var cache: T? = null
@@ -55,4 +53,8 @@ interface UiObserver<T : Any> : UiUpdate<T> {
 
 interface UiUpdate<T : Any> {
     fun update(data: T)
+}
+
+interface UpdateObserver<T : Any> {
+    fun updateObserver(uiObserver: UiObserver<T> = UiObserver.Empty())
 }

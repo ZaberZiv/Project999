@@ -1,4 +1,4 @@
-package com.izaber.project999.app
+package com.izaber.project999.core
 
 import android.util.Log
 
