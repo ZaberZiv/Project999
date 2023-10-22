@@ -1,18 +1,18 @@
-package com.izaber.project999.custom_views.buttons
+package com.izaber.project999.custom_views.progress
 
 import android.content.Context
 import android.os.Parcelable
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatButton
+import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import com.izaber.project999.custom_views.states.HideAndShow
 import com.izaber.project999.custom_views.states.VisibilityState
 
-class CustomButton @JvmOverloads constructor(
+class CustomProgress @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : AppCompatButton(context, attrs, defStyleAttr), HideAndShow {
+) : ProgressBar(context, attrs, defStyleAttr), HideAndShow {
 
     override fun onSaveInstanceState(): Parcelable? = super.onSaveInstanceState()?.let {
         val visibilityState = VisibilityState(it)

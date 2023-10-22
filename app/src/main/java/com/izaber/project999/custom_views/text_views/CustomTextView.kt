@@ -22,7 +22,7 @@ class CustomTextView @JvmOverloads constructor(
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         val visibilityState = state as VisibilityState?
-        super.onRestoreInstanceState(visibilityState)
+        super.onRestoreInstanceState(visibilityState?.superState)
         visibilityState?.let {
             visibility = it.visible
         }
