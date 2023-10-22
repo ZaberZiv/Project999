@@ -2,14 +2,8 @@ package com.izaber.project999.dashboard
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import com.izaber.project999.R
-import com.izaber.project999.core.ProvideRepresentative
 import com.izaber.project999.core.UiObserver
 import com.izaber.project999.custom_views.buttons.CustomButton
 import com.izaber.project999.custom_views.text_views.CustomTextView
@@ -31,7 +25,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
             Log.e("Ilya", "navigate to subscribe")
         }
 
-        uiObserver = object : UiObserver<PremiumDashboardUiState> {
+        uiObserver = object : DashboardCallBack {
             override fun update(data: PremiumDashboardUiState) {
                 data.show(button, textView)
             }

@@ -27,4 +27,14 @@ interface Screen {
                 .commit()
         }
     }
+
+    object Pop : Screen {
+        override fun show(fragmentManager: FragmentManager, containerId: Int) {
+            fragmentManager.popBackStack()
+        }
+    }
+
+    object Empty : Screen {
+        override fun show(fragmentManager: FragmentManager, containerId: Int) = Unit
+    }
 }

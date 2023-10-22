@@ -3,10 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <com.izaber.project999.custom_views.buttons.CustomButton
         android:id="@+id/subscribeButton"
-        android:layout_gravity="center"
-        android:text="@string/subscribe"
+        style="@style/Widget.Material3.Button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/subscribe" />
+
+    <com.izaber.project999.custom_views.progress.CustomProgress
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="#ff0000"
+        android:visibility="gone" />
+
+    <com.izaber.project999.custom_views.buttons.CustomButton
+        android:id="@+id/buttonSuccess"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/successfully_subscribed_nok"
+        android:visibility="gone" />
 </FrameLayout>
