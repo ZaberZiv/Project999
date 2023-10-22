@@ -2,10 +2,9 @@ package com.izaber.project999.core
 
 import android.app.Application
 import android.util.Log
+import com.izaber.project999.utils.TAG
 
 class App : Application(), ProvideRepresentative, ClearRepresentative {
-
-    val tag = "Ilya"
 
     private val representativeMap = mutableMapOf<Class<out Representative<*>>, Representative<*>>()
     private lateinit var core: Core
@@ -13,7 +12,7 @@ class App : Application(), ProvideRepresentative, ClearRepresentative {
 
     override fun onCreate() {
         super.onCreate()
-        Log.v(tag, "App created")
+        Log.v(TAG, "App created")
         core = Core.Base(this)
         factory = ProvideRepresentative.Factory(core, this)
     }
