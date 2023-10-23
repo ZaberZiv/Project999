@@ -5,6 +5,8 @@ import androidx.fragment.app.FragmentManager
 
 interface Screen {
 
+    fun observed(representative: MainRepresentative) = Unit
+
     fun show(fragmentManager: FragmentManager, containerId: Int)
 
     abstract class Add(

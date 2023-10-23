@@ -6,6 +6,7 @@ import com.izaber.project999.main.Navigation
 import com.izaber.project999.subscription.SubscriptionScreen
 
 interface DashboardRepresentative: Representative<PremiumDashboardUiState> {
+    fun observed() = Unit
     fun play()
 
     class Base(
@@ -19,6 +20,11 @@ interface DashboardRepresentative: Representative<PremiumDashboardUiState> {
     class Premium(
         private val observable: PremiumDashboardObservable
     ): DashboardRepresentative {
+
+        override fun observed() {
+            observable.clear()
+        }
+
         override fun play() {
             observable.update(PremiumDashboardUiState.Playing)
         }

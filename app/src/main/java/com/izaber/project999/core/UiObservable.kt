@@ -22,16 +22,12 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
         @MainThread
         override fun updateObserver(uiObserver: UiObserver<T>) = synchronized(lock) {
             observer = uiObserver
-            if (observer.isEmpty().not())
-                observer.update(cache)
+            observer.update(cache)
         }
 
         override fun update(data: T) = synchronized(lock) {
-            if (observer.isEmpty()) {
-                cache = data
-            } else {
-                observer.update(data)
-            }
+            cache = data
+            observer.update(data)
         }
 
         companion object {
@@ -40,9 +36,8 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
     }
 }
 
-interface UiObserver<T : Any> : UiUpdate<T>, IsEmpty {
+interface UiObserver<T : Any> : UiUpdate<T> {
     class Empty<T : Any> : UiObserver<T> {
-        override fun isEmpty() = true
         override fun update(data: T) = Unit
     }
 }

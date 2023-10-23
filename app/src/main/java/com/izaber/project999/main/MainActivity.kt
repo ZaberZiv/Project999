@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.izaber.project999.R
 import com.izaber.project999.core.ActivityCallback
-import com.izaber.project999.core.App
 import com.izaber.project999.core.ProvideRepresentative
 import com.izaber.project999.core.Representative
 
@@ -22,6 +21,7 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
         activityCallback = object : ActivityCallback {
             override fun update(data: Screen) = runOnUiThread {
                 data.show(supportFragmentManager, R.id.container)
+                data.observed(mainRepresentative)
             }
         }
 

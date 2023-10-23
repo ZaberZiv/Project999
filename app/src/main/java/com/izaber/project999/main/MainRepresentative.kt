@@ -5,11 +5,16 @@ import com.izaber.project999.core.UiObserver
 import com.izaber.project999.dashboard.DashboardScreen
 
 interface MainRepresentative : Representative<Screen> {
+    fun observed()
     fun showDashboard(firstTime: Boolean)
 
     class Base(
         private val navigation: Navigation.Mutable
     ) : MainRepresentative {
+
+        override fun observed() {
+            navigation.clear()
+        }
 
         override fun startGettingUpdates(uiObserver: UiObserver<Screen>) {
             navigation.updateObserver(uiObserver)

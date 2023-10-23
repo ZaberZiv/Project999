@@ -8,19 +8,45 @@ import com.izaber.project999.subscription.SubscriptionModule
 import com.izaber.project999.subscription.SubscriptionRepresentative
 
 interface ProvideRepresentative {
-    fun <T: Representative<*>> provideRepresentative(clazz: Class<T>): T
+    fun <T : Representative<*>> provideRepresentative(clazz: Class<T>): T
 
-    class Factory(
-        private val core : Core,
+    class MakeDependency(
+        private val core: Core,
         private val clear: ClearRepresentative
-    ): ProvideRepresentative {
+    ) : ProvideRepresentative {
         override fun <T : Representative<*>> provideRepresentative(clazz: Class<T>): T {
             return when (clazz) {
                 MainRepresentative::class.java -> MainModule(core).representative()
                 DashboardRepresentative::class.java -> DashboardModule(core).representative()
-                SubscriptionRepresentative::class.java -> SubscriptionModule(core, clear).representative()
+                SubscriptionRepresentative::class.java -> SubscriptionModule(
+                    core,
+                    clear
+                ).representative()
+
                 else -> throw IllegalArgumentException("unknown class $clazz")
             } as T
+        }
+    }
+
+    class Factory(
+        private val makeDependency: ProvideRepresentative
+    ) : ProvideRepresentative, ClearRepresentative {
+
+        private val representativeMap =
+            mutableMapOf<Class<out Representative<*>>, Representative<*>>()
+
+        override fun clear(clazz: Class<out Representative<*>>) {
+            representativeMap.remove(clazz)
+        }
+
+        override fun <T : Representative<*>> provideRepresentative(clazz: Class<T>): T {
+            return if (representativeMap.containsKey(clazz)) {
+                representativeMap[clazz] as T
+            } else {
+                val representative = makeDependency.provideRepresentative(clazz)
+                representativeMap[clazz] = representative
+                representative
+            }
         }
     }
 }
