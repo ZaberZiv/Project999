@@ -1,5 +1,6 @@
 package com.izaber.project999.dashboard
 
+import com.izaber.project999.core.ClearRepresentative
 import com.izaber.project999.core.Representative
 import com.izaber.project999.core.UiObserver
 import com.izaber.project999.main.Navigation
@@ -10,9 +11,11 @@ interface DashboardRepresentative: Representative<PremiumDashboardUiState> {
     fun play()
 
     class Base(
-        private val navigation: Navigation.Update
+        private val navigation: Navigation.Update,
+        private val clearRepresentative: ClearRepresentative
     ): DashboardRepresentative {
         override fun play() {
+            clearRepresentative.clear(DashboardRepresentative::class.java)
             navigation.update(SubscriptionScreen)
         }
     }
