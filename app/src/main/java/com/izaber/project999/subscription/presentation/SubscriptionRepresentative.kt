@@ -1,4 +1,4 @@
-package com.izaber.project999.subscription
+package com.izaber.project999.subscription.presentation
 
 import com.izaber.project999.core.ClearRepresentative
 import com.izaber.project999.core.ProcessDeathHandler
@@ -7,7 +7,8 @@ import com.izaber.project999.core.UiObserver
 import com.izaber.project999.dashboard.DashboardRepresentative
 import com.izaber.project999.dashboard.DashboardScreen
 import com.izaber.project999.main.Navigation
-import com.izaber.project999.main.UserPremiumCache
+import com.izaber.project999.subscription.domain.SubscriptionInteractor
+import com.izaber.project999.utils.UnitFunction
 
 interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
     SaveSubscriptionUiState, SubscriptionObserved, SubscriptionInner {
@@ -19,7 +20,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         private val deathHandler: ProcessDeathHandler,
         private val observable: SubscriptionObservable,
         private val clear: ClearRepresentative,
-        private val userPremiumCache: UserPremiumCache.Save,
+        private val subscribeInteractor: SubscriptionInteractor,
         private val navigation: Navigation.Update
     ) : SubscriptionRepresentative {
 
@@ -45,19 +46,18 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             observable.saveState(saveState)
         }
 
-        private fun thread() = Thread {
-            userPremiumCache.saveUserPremium()
-            observable.update(SubscriptionUiState.Success)
-        }
-
         override fun subscribe() {
             Thread.sleep(10000)
             observable.update(SubscriptionUiState.Loading)
             subscribeInner()
         }
 
+        private val callback: UnitFunction = {
+            observable.update(SubscriptionUiState.Success)
+        }
+
         override fun subscribeInner() {
-            thread().start()
+            subscribeInteractor.subscribe(callback)
         }
 
         override fun finish() {

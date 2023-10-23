@@ -1,4 +1,4 @@
-package com.izaber.project999.subscription
+package com.izaber.project999.subscription.presentation
 
 import android.os.Bundle
 import android.view.View

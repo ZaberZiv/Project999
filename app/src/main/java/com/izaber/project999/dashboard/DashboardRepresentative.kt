@@ -3,7 +3,7 @@ package com.izaber.project999.dashboard
 import com.izaber.project999.core.Representative
 import com.izaber.project999.core.UiObserver
 import com.izaber.project999.main.Navigation
-import com.izaber.project999.subscription.SubscriptionScreen
+import com.izaber.project999.subscription.presentation.SubscriptionScreen
 
 interface DashboardRepresentative: Representative<PremiumDashboardUiState> {
     fun observed() = Unit

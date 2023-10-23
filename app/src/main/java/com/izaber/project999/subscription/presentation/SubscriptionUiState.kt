@@ -1,4 +1,4 @@
-package com.izaber.project999.subscription
+package com.izaber.project999.subscription.presentation
 
 import com.izaber.project999.custom_views.states.HideAndShow
 import java.io.Serializable

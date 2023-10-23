@@ -5,7 +5,7 @@ import com.izaber.project999.dashboard.DashboardRepresentative
 import com.izaber.project999.main.MainModule
 import com.izaber.project999.main.MainRepresentative
 import com.izaber.project999.subscription.SubscriptionModule
-import com.izaber.project999.subscription.SubscriptionRepresentative
+import com.izaber.project999.subscription.presentation.SubscriptionRepresentative
 
 interface ProvideRepresentative {
     fun <T : Representative<*>> provideRepresentative(clazz: Class<T>): T
