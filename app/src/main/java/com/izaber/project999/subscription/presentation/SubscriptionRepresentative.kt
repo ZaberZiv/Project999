@@ -7,6 +7,7 @@ import com.izaber.project999.core.UiObserver
 import com.izaber.project999.dashboard.DashboardRepresentative
 import com.izaber.project999.dashboard.DashboardScreen
 import com.izaber.project999.main.Navigation
+import com.izaber.project999.main.UserPremiumCache
 import com.izaber.project999.subscription.domain.SubscriptionInteractor
 import com.izaber.project999.utils.UnitFunction
 
@@ -47,7 +48,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         }
 
         override fun subscribe() {
-            Thread.sleep(10000)
+            Thread.sleep(1000)
             observable.update(SubscriptionUiState.Loading)
             subscribeInner()
         }
@@ -71,7 +72,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         }
 
         override fun stopGettingUpdates() {
-            observable.updateObserver()
+            observable.updateObserver(EmptySubscriptionObserver)
         }
     }
 }
