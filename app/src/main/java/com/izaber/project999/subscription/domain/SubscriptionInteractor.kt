@@ -1,20 +1,15 @@
 package com.izaber.project999.subscription.domain
 
-import com.izaber.project999.main.UserPremiumCache
-import com.izaber.project999.utils.UnitFunction
+import com.izaber.project999.subscription.domain.repository.SubscriptionRepository
 
 interface SubscriptionInteractor {
-    fun subscribe(callBack: UnitFunction)
+    suspend fun subscribe()
 
     class Base(
-        private val userPremiumCache: UserPremiumCache.Save
+        private val subscriptionRepository: SubscriptionRepository
     ) : SubscriptionInteractor {
-        override fun subscribe(callBack: UnitFunction) {
-            Thread {
-                Thread.sleep(10000)
-                userPremiumCache.saveUserPremium()
-                callBack()
-            }.start()
+        override suspend fun subscribe() {
+            subscriptionRepository.subscribe()
         }
     }
 }

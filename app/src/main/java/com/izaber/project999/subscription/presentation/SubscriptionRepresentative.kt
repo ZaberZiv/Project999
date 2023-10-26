@@ -1,29 +1,32 @@
 package com.izaber.project999.subscription.presentation
 
 import com.izaber.project999.core.ClearRepresentative
-import com.izaber.project999.core.ProcessDeathHandler
+import com.izaber.project999.core.ProcessHandleDeath
 import com.izaber.project999.core.Representative
+import com.izaber.project999.core.RunAsync
 import com.izaber.project999.core.UiObserver
-import com.izaber.project999.dashboard.DashboardRepresentative
 import com.izaber.project999.dashboard.DashboardScreen
 import com.izaber.project999.main.Navigation
-import com.izaber.project999.main.UserPremiumCache
 import com.izaber.project999.subscription.domain.SubscriptionInteractor
-import com.izaber.project999.utils.UnitFunction
 
 interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
     SaveSubscriptionUiState, SubscriptionObserved, SubscriptionInner {
     fun init(restoreState: SaveAndRestoreSubscriptionUiState.Restore)
     fun subscribe()
     fun finish()
+    fun comeback()
 
     class Base(
-        private val deathHandler: ProcessDeathHandler,
+        private val runAsync: RunAsync,
+        private val handleDeath: ProcessHandleDeath,
         private val observable: SubscriptionObservable,
         private val clear: ClearRepresentative,
         private val subscribeInteractor: SubscriptionInteractor,
         private val navigation: Navigation.Update
-    ) : SubscriptionRepresentative {
+    ) : Representative.Abstract<SubscriptionUiState>(runAsync),
+        SubscriptionRepresentative {
+
+        private var canGoBack: Boolean = true
 
         override fun observed() {
             observable.clear()
@@ -32,12 +35,12 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         override fun init(restoreState: SaveAndRestoreSubscriptionUiState.Restore) {
             if (restoreState.isEmpty()) {
                 // init local cache
-                deathHandler.firstOpening()
+                handleDeath.firstOpening()
                 observable.update(SubscriptionUiState.Initial)
             } else {
-                if (deathHandler.wawDeathHappened()) {
+                if (handleDeath.wawDeathHappened()) {
                     // go to permanent storage and init localCache
-                    deathHandler.deathHandled()
+                    handleDeath.deathHandled()
                     restoreState.restore().restoreAfterDeath(this, observable) // todo
                 }
             }
@@ -48,21 +51,22 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         }
 
         override fun subscribe() {
-            Thread.sleep(1000)
+            canGoBack = false
             observable.update(SubscriptionUiState.Loading)
             subscribeInner()
         }
 
-        private val callback: UnitFunction = {
-            observable.update(SubscriptionUiState.Success)
-        }
-
         override fun subscribeInner() {
-            subscribeInteractor.subscribe(callback)
+            handleAsync({
+                subscribeInteractor.subscribe()
+            }, {
+                observable.update(SubscriptionUiState.Success)
+                canGoBack = true
+            })
         }
 
         override fun finish() {
-            clear.clear(DashboardRepresentative::class.java)
+            clear()
             clear.clear(SubscriptionRepresentative::class.java)
             navigation.update(DashboardScreen)
         }
@@ -73,6 +77,11 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
 
         override fun stopGettingUpdates() {
             observable.updateObserver(EmptySubscriptionObserver)
+        }
+
+        override fun comeback() {
+            if (canGoBack)
+                finish()
         }
     }
 }

@@ -3,11 +3,14 @@ package com.izaber.project999.fakes.common
 import com.izaber.project999.core.ActivityCallback
 import com.izaber.project999.core.ClearRepresentative
 import com.izaber.project999.core.Representative
+import com.izaber.project999.core.RunAsync
 import com.izaber.project999.core.UiObserver
 import com.izaber.project999.main.Navigation
 import com.izaber.project999.main.Screen
 import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.runBlocking
 
 internal interface FakeClearRepresentative : ClearRepresentative {
 
@@ -80,6 +83,40 @@ internal interface FakeMutableNavigation : Navigation.Mutable {
         override fun checkClearCalled() {
             assertEquals(true, isClearCalled)
             isClearCalled = false
+        }
+    }
+}
+
+interface FakeRunAsync : RunAsync {
+    fun checkClearCalledTimes(times: Int)
+    fun pingResult()
+    class Base : FakeRunAsync {
+
+        private var cachedBlock: (Any) -> Unit = {}
+
+        private var cached: Any = Unit
+
+        private var clearCalledTimes = 0
+
+        override fun <T : Any> runAsync(
+            scope: CoroutineScope,
+            backgroundBlock: suspend () -> T,
+            uiBlock: (T) -> Unit
+        ) = runBlocking {
+            cached = backgroundBlock()
+            cachedBlock = uiBlock as (Any) -> Unit
+        }
+
+        override fun pingResult() {
+            cachedBlock(cached)
+        }
+
+        override fun checkClearCalledTimes(times: Int) {
+            assertEquals(times, clearCalledTimes)
+        }
+
+        override fun clear() {
+            clearCalledTimes++
         }
     }
 }

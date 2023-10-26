@@ -2,12 +2,12 @@ package com.izaber.project999.core
 
 import android.util.Log
 
-interface ProcessDeathHandler {
+interface ProcessHandleDeath {
     fun firstOpening()
     fun wawDeathHappened(): Boolean
     fun deathHandled()
 
-    class Base: ProcessDeathHandler {
+    class Base : ProcessHandleDeath {
 
         private var deathHappened = true
 

@@ -1,17 +1,12 @@
 package com.izaber.project999.fakes
 
-import com.izaber.project999.core.ClearRepresentative
-import com.izaber.project999.core.ProcessDeathHandler
-import com.izaber.project999.core.Representative
+import com.izaber.project999.core.ProcessHandleDeath
 import com.izaber.project999.core.UiObserver
-import com.izaber.project999.main.Navigation
-import com.izaber.project999.main.Screen
 import com.izaber.project999.subscription.domain.SubscriptionInteractor
 import com.izaber.project999.subscription.presentation.SaveAndRestoreSubscriptionUiState
 import com.izaber.project999.subscription.presentation.SubscriptionCallBack
 import com.izaber.project999.subscription.presentation.SubscriptionObservable
 import com.izaber.project999.subscription.presentation.SubscriptionUiState
-import com.izaber.project999.utils.UnitFunction
 import junit.framework.TestCase.assertEquals
 
 
@@ -37,20 +32,13 @@ internal interface FakeSaveAndRestore : SaveAndRestoreSubscriptionUiState.Mutabl
 
 internal interface FakeSubscriptionInteractor : SubscriptionInteractor {
 
-    fun pingCallback()
     fun checkSubscribeCalledTimes(times: Int)
 
     class Base : FakeSubscriptionInteractor {
-        private var cachedCallback = {}
         private var subscribedTimesCount = 0
 
-        override fun subscribe(callBack: UnitFunction) {
+        override suspend fun subscribe() {
             subscribedTimesCount++
-            cachedCallback = callBack
-        }
-
-        override fun pingCallback() {
-            cachedCallback()
         }
 
         override fun checkSubscribeCalledTimes(times: Int) {
@@ -111,7 +99,7 @@ internal interface FakeObservable : SubscriptionObservable {
     }
 }
 
-internal interface FakeHandleDeath : ProcessDeathHandler {
+internal interface FakeHandleDeath : ProcessHandleDeath {
 
     fun checkFirstOpeningCalled(times: Int)
 
