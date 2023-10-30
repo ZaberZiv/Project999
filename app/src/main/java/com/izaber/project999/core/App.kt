@@ -1,6 +1,8 @@
 package com.izaber.project999.core
 
 import android.app.Application
+import android.util.Log
+import com.izaber.project999.utils.TAG
 
 class App : Application(), ProvideRepresentative, ClearRepresentative {
 
@@ -8,6 +10,7 @@ class App : Application(), ProvideRepresentative, ClearRepresentative {
 
     override fun onCreate() {
         super.onCreate()
+        Log.v(TAG, "App created")
         factory = ProvideRepresentative.Factory(
             ProvideRepresentative.MakeDependency(
                 core = Core.Base(this),

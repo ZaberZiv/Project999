@@ -1,11 +1,13 @@
 package com.izaber.project999.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.izaber.project999.R
 import com.izaber.project999.core.ActivityCallback
 import com.izaber.project999.core.ProvideRepresentative
 import com.izaber.project999.core.Representative
+import com.izaber.project999.utils.TAG
 
 class MainActivity : AppCompatActivity(), ProvideRepresentative {
 
@@ -14,6 +16,8 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.v(TAG, "MainActivity created (savedInstanceState: $savedInstanceState)")
+
         setContentView(R.layout.activity_main)
 
         mainRepresentative = provideRepresentative(MainRepresentative::class.java)
