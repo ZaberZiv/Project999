@@ -8,11 +8,13 @@ import com.izaber.project999.core.UiObserver
 import com.izaber.project999.dashboard.DashboardScreen
 import com.izaber.project999.main.Navigation
 import com.izaber.project999.subscription.domain.SubscriptionInteractor
+import com.izaber.project999.subscription.domain.SubscriptionResult
 
 interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
     SaveSubscriptionUiState, SubscriptionObserved, SubscriptionInner {
     fun init(restoreState: SaveAndRestoreSubscriptionUiState.Restore)
     fun subscribe()
+    suspend fun subscribeInternal()
     fun finish()
     fun comeback()
 
@@ -22,11 +24,16 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         private val observable: SubscriptionObservable,
         private val clear: ClearRepresentative,
         private val subscribeInteractor: SubscriptionInteractor,
-        private val navigation: Navigation.Update
+        private val navigation: Navigation.Update,
+        private val mapper: SubscriptionResult.Mapper
     ) : Representative.Abstract<SubscriptionUiState>(runAsync),
         SubscriptionRepresentative {
 
         private var canGoBack: Boolean = true
+
+        private val uiBlock: (SubscriptionResult) -> Unit = { result ->
+            result.map(mapper) { canGoBack = it }
+        }
 
         override fun observed() {
             observable.clear()
@@ -56,14 +63,13 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             subscribeInner()
         }
 
-        override fun subscribeInner() {
-            handleAsync({
-                subscribeInteractor.subscribe()
-            }, {
-                observable.update(SubscriptionUiState.Success)
-                canGoBack = true
-            })
-        }
+        override fun subscribeInner() = handleAsync({
+            subscribeInteractor.subscribe()
+        }, uiBlock)
+
+        override suspend fun subscribeInternal() = handleAsyncInternal({
+            subscribeInteractor.subscribe()
+        }, uiBlock)
 
         override fun finish() {
             clear()

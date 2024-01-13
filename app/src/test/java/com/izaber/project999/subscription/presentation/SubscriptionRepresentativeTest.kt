@@ -6,6 +6,7 @@ import com.izaber.project999.fakes.FakeObservable
 import com.izaber.project999.fakes.FakeSaveAndRestore
 import com.izaber.project999.fakes.FakeSubscriptionInteractor
 import com.izaber.project999.fakes.common.FakeClearRepresentative
+import com.izaber.project999.fakes.common.FakeMapper
 import com.izaber.project999.fakes.common.FakeNavigation
 import com.izaber.project999.fakes.common.FakeRunAsync
 import org.junit.Before
@@ -36,7 +37,8 @@ internal class SubscriptionRepresentativeTest {
             observable = observable,
             clear = clear,
             subscribeInteractor = subscribeInteractor,
-            navigation = navigation
+            navigation = navigation,
+            mapper = FakeMapper(observable)
         )
     }
 

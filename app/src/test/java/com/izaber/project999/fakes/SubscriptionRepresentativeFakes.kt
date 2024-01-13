@@ -3,6 +3,7 @@ package com.izaber.project999.fakes
 import com.izaber.project999.core.ProcessHandleDeath
 import com.izaber.project999.core.UiObserver
 import com.izaber.project999.subscription.domain.SubscriptionInteractor
+import com.izaber.project999.subscription.domain.SubscriptionResult
 import com.izaber.project999.subscription.presentation.SaveAndRestoreSubscriptionUiState
 import com.izaber.project999.subscription.presentation.SubscriptionCallBack
 import com.izaber.project999.subscription.presentation.SubscriptionObservable
@@ -37,8 +38,13 @@ internal interface FakeSubscriptionInteractor : SubscriptionInteractor {
     class Base : FakeSubscriptionInteractor {
         private var subscribedTimesCount = 0
 
-        override suspend fun subscribe() {
+        override suspend fun subscribe(): SubscriptionResult {
             subscribedTimesCount++
+            return SubscriptionResult.NoDataYet
+        }
+
+        override suspend fun subscribeInternal(): SubscriptionResult {
+            return SubscriptionResult.Success
         }
 
         override fun checkSubscribeCalledTimes(times: Int) {

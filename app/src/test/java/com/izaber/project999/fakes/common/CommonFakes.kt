@@ -5,8 +5,11 @@ import com.izaber.project999.core.ClearRepresentative
 import com.izaber.project999.core.Representative
 import com.izaber.project999.core.RunAsync
 import com.izaber.project999.core.UiObserver
+import com.izaber.project999.fakes.FakeObservable
 import com.izaber.project999.main.Navigation
 import com.izaber.project999.main.Screen
+import com.izaber.project999.subscription.domain.SubscriptionResult
+import com.izaber.project999.subscription.presentation.SubscriptionUiState
 import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.CoroutineScope
@@ -107,6 +110,13 @@ interface FakeRunAsync : RunAsync {
             cachedBlock = uiBlock as (Any) -> Unit
         }
 
+        override suspend fun <T : Any> runAsync(
+            backgroundBlock: suspend () -> T,
+            uiBlock: (T) -> Unit
+        ) {
+            uiBlock.invoke(backgroundBlock.invoke())
+        }
+
         override fun pingResult() {
             cachedBlock(cached)
         }
@@ -118,5 +128,14 @@ interface FakeRunAsync : RunAsync {
         override fun clear() {
             clearCalledTimes++
         }
+    }
+}
+
+internal class FakeMapper(
+    private val observable: FakeObservable
+) : SubscriptionResult.Mapper {
+    override fun mapSuccess(canGoBackCallback: (Boolean) -> Unit) {
+        observable.update(SubscriptionUiState.Success)
+        canGoBackCallback.invoke(true)
     }
 }
