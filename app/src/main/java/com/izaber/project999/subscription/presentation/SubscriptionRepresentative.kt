@@ -68,7 +68,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         }, uiBlock)
 
         override suspend fun subscribeInternal() = handleAsyncInternal({
-            subscribeInteractor.subscribe()
+            subscribeInteractor.subscribeInternal()
         }, uiBlock)
 
         override fun finish() {
