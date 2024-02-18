@@ -1,39 +1,25 @@
-package com.izaber.project999.subscription.presentation
+package com.izaber.project999.subscription.screen.presentation
 
-import com.izaber.project999.core.ClearRepresentative
-import com.izaber.project999.core.ProcessHandleDeath
+import com.izaber.project999.core.HandleDeath
 import com.izaber.project999.core.Representative
-import com.izaber.project999.core.RunAsync
 import com.izaber.project999.core.UiObserver
 import com.izaber.project999.dashboard.DashboardScreen
 import com.izaber.project999.main.Navigation
-import com.izaber.project999.subscription.domain.SubscriptionInteractor
-import com.izaber.project999.subscription.domain.SubscriptionResult
+import com.izaber.project999.subscription.progress.presentation.ComeBack
+import com.izaber.project999.subscription.progress.presentation.Observed
+import com.izaber.project999.subscription.progress.presentation.Subscribe
 
 interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
-    SaveSubscriptionUiState, SubscriptionObserved, SubscriptionInner {
+    SaveSubscriptionUiState, Observed, ComeBack<Boolean>, Subscribe {
     fun init(restoreState: SaveAndRestoreSubscriptionUiState.Restore)
-    fun subscribe()
-    suspend fun subscribeInternal()
     fun finish()
-    fun comeback()
 
     class Base(
-        private val runAsync: RunAsync,
-        private val handleDeath: ProcessHandleDeath,
+        private val handleDeath: HandleDeath,
         private val observable: SubscriptionObservable,
-        private val clear: ClearRepresentative,
-        private val subscribeInteractor: SubscriptionInteractor,
-        private val navigation: Navigation.Update,
-        private val mapper: SubscriptionResult.Mapper
-    ) : Representative.Abstract<SubscriptionUiState>(runAsync),
-        SubscriptionRepresentative {
-
-        private var canGoBack: Boolean = true
-
-        private val uiBlock: (SubscriptionResult) -> Unit = { result ->
-            result.map(mapper) { canGoBack = it }
-        }
+        private val clear: () -> Unit,
+        private val navigation: Navigation.Update
+    ) : SubscriptionRepresentative {
 
         override fun observed() {
             observable.clear()
@@ -45,10 +31,10 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
                 handleDeath.firstOpening()
                 observable.update(SubscriptionUiState.Initial)
             } else {
-                if (handleDeath.wawDeathHappened()) {
+                if (handleDeath.didDeathHappened()) {
                     // go to permanent storage and init localCache
                     handleDeath.deathHandled()
-                    restoreState.restore().restoreAfterDeath(this, observable) // todo
+                    restoreState.restore().restoreAfterDeath(observable) // todo
                 }
             }
         }
@@ -58,23 +44,12 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         }
 
         override fun subscribe() {
-            canGoBack = false
             observable.update(SubscriptionUiState.Loading)
-            subscribeInner()
         }
 
-        override fun subscribeInner() = handleAsync({
-            subscribeInteractor.subscribe()
-        }, uiBlock)
-
-        override suspend fun subscribeInternal() = handleAsyncInternal({
-            subscribeInteractor.subscribeInternal()
-        }, uiBlock)
-
         override fun finish() {
-            clear()
-            clear.clear(SubscriptionRepresentative::class.java)
             navigation.update(DashboardScreen)
+            clear.invoke()
         }
 
         override fun startGettingUpdates(uiObserver: UiObserver<SubscriptionUiState>) {
@@ -85,9 +60,8 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             observable.updateObserver(EmptySubscriptionObserver)
         }
 
-        override fun comeback() {
-            if (canGoBack)
-                finish()
+        override fun comeback(data: Boolean) {
+            if (data) finish()
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.izaber.project999.subscription.data
+package com.izaber.project999.subscription.progress.data
 
 import kotlinx.coroutines.delay
 

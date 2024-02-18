@@ -2,12 +2,12 @@ package com.izaber.project999.core
 
 import android.util.Log
 
-interface ProcessHandleDeath {
+interface HandleDeath {
     fun firstOpening()
-    fun wawDeathHappened(): Boolean
+    fun didDeathHappened(): Boolean
     fun deathHandled()
 
-    class Base : ProcessHandleDeath {
+    class Base : HandleDeath {
 
         private var deathHappened = true
 
@@ -19,7 +19,7 @@ interface ProcessHandleDeath {
             Log.v(tag, "firstOpening()")
         }
 
-        override fun wawDeathHappened(): Boolean {
+        override fun didDeathHappened(): Boolean {
             return deathHappened
         }
 

@@ -4,9 +4,7 @@ import com.izaber.project999.core.ClearRepresentative
 import com.izaber.project999.core.Representative
 import com.izaber.project999.core.UiObserver
 import com.izaber.project999.main.Navigation
-import com.izaber.project999.subscription.presentation.SubscriptionCallBack
-import com.izaber.project999.subscription.presentation.SubscriptionScreen
-import com.izaber.project999.subscription.presentation.SubscriptionUiState
+import com.izaber.project999.subscription.screen.presentation.SubscriptionScreen
 
 interface DashboardRepresentative: Representative<PremiumDashboardUiState> {
     fun observed() = Unit

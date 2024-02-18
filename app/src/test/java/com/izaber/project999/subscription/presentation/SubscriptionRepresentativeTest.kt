@@ -9,6 +9,10 @@ import com.izaber.project999.fakes.common.FakeClearRepresentative
 import com.izaber.project999.fakes.common.FakeMapper
 import com.izaber.project999.fakes.common.FakeNavigation
 import com.izaber.project999.fakes.common.FakeRunAsync
+import com.izaber.project999.subscription.screen.presentation.EmptySubscriptionObserver
+import com.izaber.project999.subscription.screen.presentation.SubscriptionCallBack
+import com.izaber.project999.subscription.screen.presentation.SubscriptionRepresentative
+import com.izaber.project999.subscription.screen.presentation.SubscriptionUiState
 import org.junit.Before
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.izaber.project999.subscription.domain.repository
+package com.izaber.project999.subscription.progress.domain.repository
 
 interface SubscriptionRepository {
     fun subscribe()

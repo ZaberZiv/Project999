@@ -8,8 +8,8 @@ import com.izaber.project999.core.UiObserver
 import com.izaber.project999.fakes.FakeObservable
 import com.izaber.project999.main.Navigation
 import com.izaber.project999.main.Screen
-import com.izaber.project999.subscription.domain.SubscriptionResult
-import com.izaber.project999.subscription.presentation.SubscriptionUiState
+import com.izaber.project999.subscription.progress.domain.SubscriptionResult
+import com.izaber.project999.subscription.screen.presentation.SubscriptionUiState
 import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.CoroutineScope

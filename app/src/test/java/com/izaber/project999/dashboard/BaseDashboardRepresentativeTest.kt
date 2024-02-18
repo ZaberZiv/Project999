@@ -2,7 +2,7 @@ package com.izaber.project999.dashboard
 
 import com.izaber.project999.fakes.common.FakeClearRepresentative
 import com.izaber.project999.fakes.common.FakeNavigation
-import com.izaber.project999.subscription.presentation.SubscriptionScreen
+import com.izaber.project999.subscription.screen.presentation.SubscriptionScreen
 import org.junit.Before
 import org.junit.Test
 

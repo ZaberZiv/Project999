@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:text="@string/subscribe" />
 
-    <com.izaber.project999.custom_views.progress.CustomProgress
+    <com.izaber.project999.subscription.progress.presentation.SubscriptionProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"

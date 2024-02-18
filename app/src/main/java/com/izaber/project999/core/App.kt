@@ -11,11 +11,10 @@ class App : Application(), ProvideRepresentative, ClearRepresentative {
     override fun onCreate() {
         super.onCreate()
         Log.v(TAG, "App created")
+
         factory = ProvideRepresentative.Factory(
-            ProvideRepresentative.MakeDependency(
-                core = Core.Base(this),
-                clear = this
-            )
+            core = Core.Base(this),
+            clear = this
         )
     }
 

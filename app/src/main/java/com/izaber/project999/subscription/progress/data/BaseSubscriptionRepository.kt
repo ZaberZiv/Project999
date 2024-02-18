@@ -1,7 +1,7 @@
-package com.izaber.project999.subscription.data
+package com.izaber.project999.subscription.progress.data
 
 import com.izaber.project999.main.UserPremiumCache
-import com.izaber.project999.subscription.domain.repository.SubscriptionRepository
+import com.izaber.project999.subscription.progress.domain.repository.SubscriptionRepository
 
 class BaseSubscriptionRepository(
     private val foregroundServiceWrapper: ForegroundServiceWrapper,

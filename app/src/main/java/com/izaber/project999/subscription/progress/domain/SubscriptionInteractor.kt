@@ -1,6 +1,6 @@
-package com.izaber.project999.subscription.domain
+package com.izaber.project999.subscription.progress.domain
 
-import com.izaber.project999.subscription.domain.repository.SubscriptionRepository
+import com.izaber.project999.subscription.progress.domain.repository.SubscriptionRepository
 
 interface SubscriptionInteractor {
     suspend fun subscribe(): SubscriptionResult
@@ -28,18 +28,18 @@ interface SubscriptionInteractor {
 
 interface SubscriptionResult {
     interface Mapper {
-        fun mapSuccess(canGoBackCallback: (Boolean) -> Unit)
+        fun mapSuccess()
     }
 
-    fun map(mapper: Mapper, canGoBackCallback: (Boolean) -> Unit)
+    fun map(mapper: Mapper)
 
     object Success : SubscriptionResult {
-        override fun map(mapper: Mapper, canGoBackCallback: (Boolean) -> Unit) {
-            mapper.mapSuccess(canGoBackCallback)
+        override fun map(mapper: Mapper) {
+            mapper.mapSuccess()
         }
     }
 
     object NoDataYet : SubscriptionResult {
-        override fun map(mapper: Mapper, canGoBackCallback: (Boolean) -> Unit) = Unit
+        override fun map(mapper: Mapper) = Unit
     }
 }

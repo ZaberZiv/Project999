@@ -1,4 +1,4 @@
-package com.izaber.project999.subscription.presentation
+package com.izaber.project999.subscription.screen.presentation
 
 import android.os.Bundle
 import com.izaber.project999.core.SaveAndRestoreState

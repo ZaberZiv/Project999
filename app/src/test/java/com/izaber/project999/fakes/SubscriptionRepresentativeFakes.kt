@@ -1,13 +1,13 @@
 package com.izaber.project999.fakes
 
-import com.izaber.project999.core.ProcessHandleDeath
+import com.izaber.project999.core.HandleDeath
 import com.izaber.project999.core.UiObserver
-import com.izaber.project999.subscription.domain.SubscriptionInteractor
-import com.izaber.project999.subscription.domain.SubscriptionResult
-import com.izaber.project999.subscription.presentation.SaveAndRestoreSubscriptionUiState
-import com.izaber.project999.subscription.presentation.SubscriptionCallBack
-import com.izaber.project999.subscription.presentation.SubscriptionObservable
-import com.izaber.project999.subscription.presentation.SubscriptionUiState
+import com.izaber.project999.subscription.progress.domain.SubscriptionInteractor
+import com.izaber.project999.subscription.progress.domain.SubscriptionResult
+import com.izaber.project999.subscription.screen.presentation.SaveAndRestoreSubscriptionUiState
+import com.izaber.project999.subscription.screen.presentation.SubscriptionCallBack
+import com.izaber.project999.subscription.screen.presentation.SubscriptionObservable
+import com.izaber.project999.subscription.screen.presentation.SubscriptionUiState
 import junit.framework.TestCase.assertEquals
 
 
@@ -105,7 +105,7 @@ internal interface FakeObservable : SubscriptionObservable {
     }
 }
 
-internal interface FakeHandleDeath : ProcessHandleDeath {
+internal interface FakeHandleDeath : HandleDeath {
 
     fun checkFirstOpeningCalled(times: Int)
 
@@ -123,7 +123,7 @@ internal interface FakeHandleDeath : ProcessHandleDeath {
             firstOpeningCalledTimes++
         }
 
-        override fun wawDeathHappened(): Boolean {
+        override fun didDeathHappened(): Boolean {
             return deathHappened
         }
 
