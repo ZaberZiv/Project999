@@ -134,8 +134,7 @@ interface FakeRunAsync : RunAsync {
 internal class FakeMapper(
     private val observable: FakeObservable
 ) : SubscriptionResult.Mapper {
-    override fun mapSuccess(canGoBackCallback: (Boolean) -> Unit) {
+    override fun mapSuccess() {
         observable.update(SubscriptionUiState.Success)
-        canGoBackCallback.invoke(true)
     }
 }

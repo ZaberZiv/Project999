@@ -6,7 +6,6 @@ import com.izaber.project999.fakes.FakeObservable
 import com.izaber.project999.fakes.FakeSaveAndRestore
 import com.izaber.project999.fakes.FakeSubscriptionInteractor
 import com.izaber.project999.fakes.common.FakeClearRepresentative
-import com.izaber.project999.fakes.common.FakeMapper
 import com.izaber.project999.fakes.common.FakeNavigation
 import com.izaber.project999.fakes.common.FakeRunAsync
 import com.izaber.project999.subscription.screen.presentation.EmptySubscriptionObserver
@@ -31,18 +30,16 @@ internal class SubscriptionRepresentativeTest {
         runAsync = FakeRunAsync.Base()
         handleDeath = FakeHandleDeath.Base()
         observable = FakeObservable.Base()
-        clear = FakeClearRepresentative.Base()
         subscribeInteractor = FakeSubscriptionInteractor.Base()
         navigation = FakeNavigation.Base()
 
         representative = SubscriptionRepresentative.Base(
-            runAsync = runAsync,
             handleDeath = handleDeath,
             observable = observable,
-            clear = clear,
-            subscribeInteractor = subscribeInteractor,
-            navigation = navigation,
-            mapper = FakeMapper(observable)
+            clear = {
+
+            },
+            navigation = navigation
         )
     }
 
@@ -215,7 +212,7 @@ internal class SubscriptionRepresentativeTest {
         representative.init(saveAndRestore)
         representative.startGettingUpdates(callBack)
         representative.subscribe()
-        representative.comeback()
+        representative.comeback(false)
         runAsync.checkClearCalledTimes(0)
     }
 
@@ -229,7 +226,7 @@ internal class SubscriptionRepresentativeTest {
         representative.startGettingUpdates(callBack)
         representative.subscribe()
         runAsync.pingResult()
-        representative.comeback()
+        representative.comeback(true)
         runAsync.checkClearCalledTimes(1)
     }
 }
